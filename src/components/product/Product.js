@@ -5,17 +5,16 @@ import { MdOutlineFavoriteBorder, MdOutlineFavorite } from 'react-icons/md'
 
 
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { appendModal, deleteModal } from "store/actions/modal";
-import { toggleCart } from "store/actions/cartProducts";
-import { toggleFavorite } from "store/actions/favorites";
+
+
+
+import { useProducts } from "context/ContextProvider";
 
 
 
 const Product = ({ product }) => {
-    const { cartProducts } = useSelector(state => state.cart)
-    const { favorites } = useSelector(state => state.favorites)
-    const dispatch = useDispatch()
+    const { cartProducts, favorites, toggleCart, toggleFavorite, appendModal, deleteModal } = useProducts()
+
 
     const location = useLocation()
     const addModalData = {
@@ -23,13 +22,13 @@ const Product = ({ product }) => {
         closeButton: true,
         text: `Do you want to add product ${product.name
             } to the cart?`,
-        closeModal: () => dispatch(deleteModal()),
+        closeModal: () => deleteModal(),
         actions: <><button onClick={() => {
             product.isAdded = true
-            dispatch(deleteModal())
-            dispatch(toggleCart(product))
+            deleteModal()
+            toggleCart(product)
         }} className={styles["modal-btn btn-success"]}>Add</button>
-            <button onClick={() => dispatch(deleteModal())} className={styles["modal-btn btn-danger"]}>Cancel</button></>
+            <button onClick={() => deleteModal()} className={styles["modal-btn btn-danger"]}>Cancel</button></>
     }
 
     const removeModalData = {
@@ -37,13 +36,13 @@ const Product = ({ product }) => {
         closeButton: true,
         text: `Do you want to remove product ${product.name
             } from the cart?`,
-        closeModal: () => dispatch(deleteModal()),
+        closeModal: () => deleteModal(),
         actions: <><button onClick={() => {
             delete product.isAdded
-            dispatch(deleteModal())
-            dispatch(toggleCart(product))
+            deleteModal()
+            toggleCart(product)
         }} className={styles["modal-btn btn-success"]}>Remove</button>
-            <button onClick={() => dispatch(deleteModal())} className={styles["modal-btn btn-danger"]}>Cancel</button></>
+            <button onClick={() => deleteModal()} className={styles["modal-btn btn-danger"]}>Cancel</button></>
     }
 
 
@@ -90,9 +89,12 @@ const Product = ({ product }) => {
 
                 <div className={styles['product__actions']}>
                     {location.pathname === '/cart' ? (
-                        <button onClick={() => dispatch(appendModal(removeModalData))} type="button" className={`${styles['cart']}`}>Remove</button>
+                        <button onClick={() => appendModal(removeModalData)} type="button" className={`${styles['cart']}`}>Remove</button>
                     ) : (
-                        <button onClick={() => dispatch(appendModal(addModalData))} disabled={product.isAdded} type="button" className={`${styles['cart']}`}>{product.isAdded ? 'Added' : 'Add to cart'}</button>
+                        <button onClick={() => {
+                            console.log('first')
+                            appendModal(addModalData)
+                        }} disabled={product.isAdded} type="button" className={`${styles['cart']}`}>{product.isAdded ? 'Added' : 'Add to cart'}</button>
                     )}
                     <button onClick={() => {
 
@@ -101,7 +103,7 @@ const Product = ({ product }) => {
                         } else {
                             product.isFavorite = true
                         }
-                        dispatch(toggleFavorite(product))
+                        toggleFavorite(product)
                     }} type="button" className={styles['favorite']}>
 
                         {product.isFavorite ? <MdOutlineFavorite size={28} /> : <MdOutlineFavoriteBorder size={28} />}

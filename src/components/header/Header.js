@@ -4,11 +4,11 @@ import { BsFillCartFill } from 'react-icons/bs'
 import { MdFavorite } from "react-icons/md"
 
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+
+import { useProducts } from 'context/ContextProvider'
 
 const Header = () => {
-  const { favorites } = useSelector(state => state.favorites)
-  const { cartProducts } = useSelector(state => state.cart)
+  const { favorites, cartProducts } = useProducts()
   return (
     <header className={styles.header}>
 

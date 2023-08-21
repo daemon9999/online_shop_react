@@ -5,14 +5,15 @@ import Footer from 'components/footer/Footer'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import Modal from 'components/modal/Modal'
-import { useSelector } from 'react-redux'
+
+import { useProducts } from 'context/ContextProvider'
 
 
 const MainLayout = () => {
-  const { modals } = useSelector(state => state.modal)
+  const { modals } = useProducts()
   const location = useLocation()
   useEffect(() => {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
   }, [location.pathname])
   return (
     <>

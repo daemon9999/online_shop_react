@@ -6,51 +6,51 @@ import Loader from "components/loader/Loader";
 
 import { useLocation } from "react-router-dom";
 import NotAvailable from "components/not-available/NotAvailable";
-import { useSelector } from "react-redux";
+
+import { useProducts } from "context/ContextProvider";
 
 const ProductsList = ({ itemList }) => {
-    const {cartProducts} = useSelector(state => state.cart)
-    const {favorites} = useSelector(state => state.favorites)
-    const {loading, error} = useSelector(state => state.products)
+    const { cartProducts, favorites, loading, error } = useProducts()
+
     const location = useLocation()
-  
+
 
     useEffect(() => {
         cartProducts.length > 0 ? window['localStorage'].setItem('products', JSON.stringify(cartProducts)) :
-        window['localStorage'].removeItem('products')
+            window['localStorage'].removeItem('products')
     }, [cartProducts])
 
     useEffect(() => {
         favorites.length > 0 ? window['localStorage'].setItem('favorites', JSON.stringify(favorites)) :
-        window['localStorage'].removeItem('favorites')
+            window['localStorage'].removeItem('favorites')
     }, [favorites])
 
 
 
-    return (
-        <main className={styles.products}>
-            {(!!loading && location.pathname === '/') && (<Loader />)}
-            {(itemList.length === 0 && location.pathname !== '/') && (
-                <NotAvailable type={location.pathname === '/cart' ? 'cart' : location.pathname === '/favorites' ? 'favorite' : ''} />
-            )}
-            {itemList.length > 0 && (
-                <div className={`container ${styles['products__container']}`}>
-                    {itemList.map((item) => (
-                        <Product
+        return(
+            <main className={styles.products}>
+                {(!!loading && location.pathname === '/') && (<Loader />)}
+                {(itemList.length === 0 && location.pathname !== '/') && (
+                    <NotAvailable type={location.pathname === '/cart' ? 'cart' : location.pathname === '/favorites' ? 'favorite' : ''} />
+                )}
+                {itemList.length > 0 && (
+                    <div className={`container ${styles['products__container']}`}>
+                        {itemList.map((item) => (
+                            <Product
 
 
-                            product={item}
-                            key={item.id}
-                        />
-                    ))}
+                                product={item}
+                                key={item.id}
+                            />
+                        ))}
 
-                </div>)}
+                    </div>)}
 
-            {error && (<NotAvailable text="Failed to fetch products"/>)}
+                {error && (<NotAvailable text="Failed to fetch products" />)}
 
 
-        </main>
-    )
+            </main>
+        )
 
 
 }

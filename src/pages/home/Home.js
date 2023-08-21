@@ -1,17 +1,17 @@
 import ProductsList from 'components/products-list/ProductsList'
+import { useProducts } from 'context/ContextProvider'
 
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchData } from 'store/actions/products'
+
 
 const Home = () => {
-    const { products } = useSelector(state => state.products)
-    const dispatch = useDispatch()
+    const { products, fetchProducts } = useProducts()
+    
 
 
 
     useEffect(() => {
-        dispatch(fetchData())
+        fetchProducts()
     }, [])
 
 
