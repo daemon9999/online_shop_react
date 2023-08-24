@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styles from "./Header.module.scss"
 import { BsFillCartFill } from 'react-icons/bs'
@@ -5,10 +6,10 @@ import { MdFavorite } from "react-icons/md"
 
 import { Link } from 'react-router-dom'
 
-import { useProducts } from 'context/ContextProvider'
 
-const Header = () => {
-  const { favorites, cartProducts } = useProducts()
+
+const Header = ({favorites, cartProducts}) => {
+
   return (
     <header className={styles.header}>
 
@@ -51,3 +52,7 @@ const Header = () => {
 export default Header
 
 
+Header.propTypes = {
+  favorites: PropTypes.array.isRequired,
+  cartProducts: PropTypes.array.isRequired
+}

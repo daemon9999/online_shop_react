@@ -8,12 +8,12 @@ import { useLocation } from "react-router-dom";
 
 
 
-import { useProducts } from "context/ContextProvider";
 
 
 
-const Product = ({ product }) => {
-    const { cartProducts, favorites, toggleCart, toggleFavorite, appendModal, deleteModal } = useProducts()
+
+const Product = ({ product, cartProducts, toggleCart, toggleFavorite, favorites, appendModal, deleteModal }) => {
+
 
 
     const location = useLocation()
@@ -129,5 +129,11 @@ Product.propTypes = {
         isFavorite: PropTypes.bool,
         isAdded: PropTypes.bool
 
-    })
+    }).isRequired,
+    cartProducts: PropTypes.array.isRequired,
+    toggleCart: PropTypes.func.isRequired,
+    toggleFavorite: PropTypes.func.isRequired,
+    favorites: PropTypes.array.isRequired,
+    appendModal: PropTypes.func.isRequired,
+    deleteModal: PropTypes.func.isRequired,
 }

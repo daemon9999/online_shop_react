@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import styles from "./ProductsList.module.scss"
 import Product from "components/product/Product";
-import PropTypes from "prop-types"
-import Loader from "components/loader/Loader";
 
+import Loader from "components/loader/Loader";
+import PropTypes from 'prop-types'
 import { useLocation } from "react-router-dom";
 import NotAvailable from "components/not-available/NotAvailable";
 
-import { useProducts } from "context/ContextProvider";
 
-const ProductsList = ({ itemList }) => {
-    const { cartProducts, favorites, loading, error } = useProducts()
+
+const ProductsList = ({ itemList, cartProducts, favorites, loading, error, appendModal, deleteModal, toggleCart, toggleFavorite }) => {
+
 
     const location = useLocation()
 
@@ -27,37 +27,52 @@ const ProductsList = ({ itemList }) => {
 
 
 
-        return(
-            <main className={styles.products}>
-                {(!!loading && location.pathname === '/') && (<Loader />)}
-                {(itemList.length === 0 && location.pathname !== '/') && (
-                    <NotAvailable type={location.pathname === '/cart' ? 'cart' : location.pathname === '/favorites' ? 'favorite' : ''} />
-                )}
-                {itemList.length > 0 && (
-                    <div className={`container ${styles['products__container']}`}>
-                        {itemList.map((item) => (
-                            <Product
+    return (
+        <main className={styles.products}>
+            {(!!loading && location.pathname === '/') && (<Loader />)}
+            {(itemList.length === 0 && location.pathname !== '/') && (
+                <NotAvailable type={location.pathname === '/cart' ? 'cart' : location.pathname === '/favorites' ? 'favorite' : ''} />
+            )}
+            {itemList.length > 0 && (
+                <div className={`container ${styles['products__container']}`}>
+                    {itemList.map((item) => (
+                        <Product
+
+                            appendModal={appendModal}
+                            deleteModal={deleteModal}
+                            cartProducts={cartProducts}
+                            favorites={favorites}
+                            toggleCart={toggleCart}
+                            toggleFavorite={toggleFavorite}
+                            product={item}
+                            key={item.id}
+                        />
+                    ))}
+
+                </div>)}
+
+            {error && (<NotAvailable text="Failed to fetch products" />)}
 
 
-                                product={item}
-                                key={item.id}
-                            />
-                        ))}
-
-                    </div>)}
-
-                {error && (<NotAvailable text="Failed to fetch products" />)}
-
-
-            </main>
-        )
+        </main>
+    )
 
 
 }
 
 export default ProductsList
 
+
 ProductsList.propTypes = {
-    toggleFavorite: PropTypes.func,
-    toggleCartProduct: PropTypes.func
+    itemList: PropTypes.array.isRequired,
+
+    cartProducts: PropTypes.array.isRequired,
+    error: PropTypes.bool.isRequired,
+    favorites: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    toggleFavorite: PropTypes.func.isRequired,
+    toggleCart: PropTypes.func.isRequired,
+    appendModal: PropTypes.func.isRequired,
+    deleteModal: PropTypes.func.isRequired
+
 }

@@ -1,19 +1,38 @@
 import ProductsList from 'components/products-list/ProductsList'
-import { useProducts } from 'context/ContextProvider'
+
 
 import React from 'react'
+import PropTypes from 'prop-types'
 
+const Favorites = ({ cartProducts, error, favorites, loading, toggleFavorite, toggleCart, appendModal, deleteModal }) => {
 
-const Favorites = () => {
-  const {favorites} = useProducts()
   return (
     <>
-    
+
       <ProductsList
         itemList={favorites}
+        cartProducts={cartProducts}
+        error={error}
+        favorites={favorites}
+        loading={loading}
+        toggleFavorite={toggleFavorite}
+        toggleCart={toggleCart}
+        appendModal={appendModal}
+        deleteModal={deleteModal}
       />
     </>
   )
 }
 
 export default Favorites
+Favorites.propTypes = {
+  fetchProducts: PropTypes.func.isRequired,
+  cartProducts: PropTypes.array.isRequired,
+  error: PropTypes.bool.isRequired,
+  favorites: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  toggleFavorite: PropTypes.func.isRequired,
+  toggleCart: PropTypes.func.isRequired,
+  appendModal: PropTypes.func.isRequired,
+  deleteModal: PropTypes.func.isRequired
+}

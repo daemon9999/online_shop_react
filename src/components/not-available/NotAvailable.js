@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import React from 'react'
 import styles from "./NotAvailable.module.scss"
 const NotAvailable = ({type='', text=''}) => {
@@ -11,3 +13,9 @@ const NotAvailable = ({type='', text=''}) => {
 }
 
 export default NotAvailable
+
+
+NotAvailable.propTypes = {
+  type: PropTypes.string,
+  text: PropTypes.string
+}

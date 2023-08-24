@@ -6,11 +6,9 @@ import { Outlet, useLocation } from 'react-router-dom'
 
 import Modal from 'components/modal/Modal'
 
-import { useProducts } from 'context/ContextProvider'
+import PropTypes from 'prop-types';
 
-
-const MainLayout = () => {
-  const { modals } = useProducts()
+const MainLayout = ({ modals, favorites, cartProducts }) => {
   const location = useLocation()
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -31,7 +29,7 @@ const MainLayout = () => {
         )
       }
       )}
-      <Header />
+      <Header favorites={favorites} cartProducts={cartProducts} />
 
       <Outlet />
 
@@ -44,3 +42,11 @@ const MainLayout = () => {
 
 
 export default MainLayout
+
+MainLayout.propTypes = {
+  modals: PropTypes.array.isRequired,
+  favorites: PropTypes.array.isRequired,
+  cartProducts: PropTypes.array.isRequired
+
+}
+
